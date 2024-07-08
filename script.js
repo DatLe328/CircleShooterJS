@@ -31,7 +31,6 @@ function fillCircle(context, center, r, color) {
 
 let radius = 10;
 let pos = new Vector2D(radius + 10, radius + 10);
-let velocity = new Vector2D(0, 0);
 let speed = 500;
 let dx = 1;
 let dy = 1;
@@ -43,6 +42,8 @@ let directionMap = {
 	'KeyA': new Vector2D(-speed, 0),
 	'KeyD': new Vector2D(speed, 0),
 };
+
+let pressedKeys = new Set();
 
 document.addEventListener("DOMContentLoaded", () => {
 	function step(timeStamp) {
@@ -56,7 +57,13 @@ document.addEventListener("DOMContentLoaded", () => {
 		const height = window.innerHeight;
 		canvas.width = width;
 		canvas.width = height;
-
+        
+        let velocity = new Vector2D(0, 0);
+        for (let key of pressedKeys) {
+            if (key in directionMap) {
+                velocity = velocity.add(directionMap[key]);
+            }
+        }
 		pos = pos.add(velocity.scale(dt));
 
 		ctx.clearRect(0, 0, width, height);
@@ -65,15 +72,11 @@ document.addEventListener("DOMContentLoaded", () => {
 	}
 
 	document.addEventListener('keydown', event => {
-		if (event.code in directionMap) {
-            velocity = velocity.add(directionMap[event.code]);
-        }
+		pressedKeys.add(event.code);
 	});
 
 	document.addEventListener('keyup', event => {
-		if (event.code in directionMap) {
-            velocity = velocity.sub(directionMap[event.code]);
-        }
+		pressedKeys.delete(event.code);
 	});
 
 	window.requestAnimationFrame(step);
