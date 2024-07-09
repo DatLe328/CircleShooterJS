@@ -22,10 +22,6 @@ function fillCircle(context, center, r, color) {
 	context.beginPath();
 	context.arc(center.x, center.y, r, 0, Math.PI * 2, 0);
 	context.fillStyle = color;
-	// context.lineWidth = 0;
-	// context.strokeWidth = 0;
-	// context.strokeStyle = "#181818"
-	// context.stroke();
 	context.fill();
 }
 
